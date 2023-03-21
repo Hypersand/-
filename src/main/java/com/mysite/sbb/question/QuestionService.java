@@ -22,7 +22,6 @@ public class QuestionService {
         if (question.isPresent()) {
             return question.get();
         }
-
         throw new DataNotFoundException("question not found");
     }
 }
