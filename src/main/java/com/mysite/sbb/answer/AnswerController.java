@@ -29,7 +29,7 @@ public class AnswerController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{id}")
     public String createAnswer(Model model, @PathVariable Long id, @Valid AnswerForm answerForm, BindingResult bindingResult
-    , Principal principal) {
+            , Principal principal) {
         Question question = questionService.getQuestion(id);
         SiteUser user = userService.getUser(principal.getName());
         if (bindingResult.hasErrors()) {
@@ -56,7 +56,7 @@ public class AnswerController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
-    public String modifyAnswer(@PathVariable Long id, @Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal ) {
+    public String modifyAnswer(@PathVariable Long id, @Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
             return "/answer/answer_form";
         }
@@ -71,13 +71,23 @@ public class AnswerController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
-    public String deleteAnswer(@PathVariable Long id, Principal principal ) {
+    public String deleteAnswer(@PathVariable Long id, Principal principal) {
         Answer answer = answerService.getAnswer(id);
         if (!answer.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
 
         answerService.delete(answer);
+        return "redirect:/question/detail/" + answer.getQuestion().getId();
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vote/{id}")
+    public String voteAnswer(@PathVariable Long id, Principal principal) {
+        Answer answer = answerService.getAnswer(id);
+        SiteUser user = userService.getUser(principal.getName());
+        answerService.vote(answer, user);
+
         return "redirect:/question/detail/" + answer.getQuestion().getId();
     }
 
