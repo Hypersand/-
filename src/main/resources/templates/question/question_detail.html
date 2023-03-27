@@ -18,6 +18,7 @@
                 </div>
             </div>
              <div class="my-3">
+
                  <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
                     th:data-uri="@{|/question/vote/${question.id}|}">
                      추천
@@ -32,8 +33,43 @@
                     th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
                     th:text="삭제"></a>
              </div>
+            <div>
+                <span class="border mb-4 p-1">
+                    <span class="comment py-2 text-muted">댓글</span>
+                    <span class="badge text-bg-primary" th:text="${#lists.size(question.comments)}"></span>
+                </span>
+            </div>
+            <div class="comment py-2 text-muted" th:if="${not #lists.isEmpty(question.comments)}">
+                <div th:each="comment,index : ${question.comments}" class="comment-content py-2 text-muted">
+                    <span class="border-bottom py-1" style="white-space: pre-line;" th:text="${comment.content}"></span>
+                    <span class="text-end text-success" th:text="${comment.author.username}"></span>
+                </div>
+            </div>
         </div>
     </div>
+
+    <div>
+        <h5 class="border-bottom my-3 py-2">댓글 등록</h5>
+        <form class="my-3" th:object="${commentForm}" th:action="@{|/comment/create/${question.id}|}" method="post">
+            <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+                <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+            </div>
+            <textarea name="content" sec:authorize="isAnonymous()" disabled th:field="*{content}" rows="2" class="form-control"></textarea>
+            <textarea name="content" sec:authorize="isAuthenticated()" th:field="*{content}" rows="2" class="form-control"></textarea>
+            <input type="submit" value="댓글등록" class="btn btn-primary my-2">
+        </form>
+    </div>
+
+
+    <h5 class="border-bottom my-3 py-2">답변 등록</h5>
+    <form class="my-3" th:object="${answerForm}" th:action="@{|/answer/create/${question.id}|}" method="post">
+        <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+            <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+        </div>
+        <textarea name="content" sec:authorize="isAnonymous()" disabled th:field="*{content}" rows="10" class="form-control"></textarea>
+        <textarea name="content" sec:authorize="isAuthenticated()" th:field="*{content}" rows="10" class="form-control"></textarea>
+        <input type="submit" value="답변등록" class="btn btn-primary my-2">
+    </form>
 
     <h5 class="border-bottom my-3 py-2" th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
     <div class="card my-3" th:each="answer : ${paging}">
@@ -92,14 +128,6 @@
             </li>
         </ul>
     </div>
-    <form class="my-3" th:object="${answerForm}" th:action="@{|/answer/create/${question.id}|}" method="post">
-        <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
-            <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
-        </div>
-        <textarea name="content" sec:authorize="isAnonymous()" disabled th:field="*{content}" rows="10" class="form-control"></textarea>
-        <textarea name="content" sec:authorize="isAuthenticated()" th:field="*{content}" rows="10" class="form-control"></textarea>
-        <input type="submit" value="답변등록" class="btn btn-primary my-2">
-    </form>
 
 </div>
 <script layout:fragment="script" type='text/javascript'>

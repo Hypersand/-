@@ -2,12 +2,14 @@ package com.mysite.sbb.question;
 
 
 import com.mysite.sbb.answer.Answer;
+import com.mysite.sbb.comment.Comment;
 import com.mysite.sbb.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -36,6 +38,9 @@ public class Question {
 
     @ManyToMany
     private Set<SiteUser> voter;
+
+    @OneToMany(mappedBy = "question")
+    private List<Comment> comments = new ArrayList<>();
 
 
 }
