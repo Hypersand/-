@@ -20,13 +20,18 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests().requestMatchers("/**").permitAll()
+        http.authorizeHttpRequests().requestMatchers("/question/list").permitAll()
+                .requestMatchers("/question/detail").permitAll()
+                .and()
+                .authorizeHttpRequests().anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/user/login")
+                .permitAll()
                 .defaultSuccessUrl("/")
                 .and()
                 .logout()
+                .permitAll()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true);
