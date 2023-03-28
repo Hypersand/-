@@ -27,10 +27,10 @@ public class Answer {
 
     private LocalDateTime modifyDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Question question;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private SiteUser author;
 
     @ManyToMany

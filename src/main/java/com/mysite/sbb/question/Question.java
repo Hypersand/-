@@ -33,7 +33,7 @@ public class Question {
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answerList;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private SiteUser author;
 
     @ManyToMany
