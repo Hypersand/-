@@ -2,6 +2,7 @@ package com.mysite.sbb.question;
 
 
 import com.mysite.sbb.answer.Answer;
+import com.mysite.sbb.category.Category;
 import com.mysite.sbb.comment.Comment;
 import com.mysite.sbb.user.SiteUser;
 import jakarta.persistence.*;
@@ -42,5 +43,7 @@ public class Question {
     @OneToMany(mappedBy = "question")
     private List<Comment> comments = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
 }

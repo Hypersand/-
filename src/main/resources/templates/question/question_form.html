@@ -7,7 +7,16 @@
     <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
       <div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
     </div>
-    <div class="mb-3">
+
+    <h6 class=" ">카테고리 선택</h6>
+    <div class="border-bottom pb-2">
+      <select th:field="*{category}">
+        <option th:each="cat : ${T(com.mysite.sbb.category.Category).values()}"
+                th:value="${cat}" th:text="${cat}"></option>
+      </select>
+    </div>
+
+    <div class="my-3 mb-3">
       <label for="subject" class="form-label">제목</label>
       <input type="text" th:field="*{subject}" name="subject" id="subject" class="form-control">
     </div>

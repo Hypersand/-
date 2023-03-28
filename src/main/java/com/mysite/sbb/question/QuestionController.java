@@ -62,7 +62,7 @@ public class QuestionController {
 
         SiteUser user = userService.getUser(principal.getName());
 
-        questionService.create(questionForm.getSubject(), questionForm.getContent(), user);
+        questionService.create(questionForm.getSubject(), questionForm.getContent(), questionForm.getCategory(), user);
         return "redirect:/question/list";
     }
 
