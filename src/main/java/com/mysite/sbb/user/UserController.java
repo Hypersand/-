@@ -1,15 +1,18 @@
 package com.mysite.sbb.user;
 
 
+import com.mysite.sbb.question.Question;
+import com.mysite.sbb.question.QuestionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
 
     private final UserService userService;
+
+    private final QuestionService questionService;
 
     @GetMapping("/signup")
     public String signup(@ModelAttribute UserCreateForm userCreateForm) {
@@ -52,9 +57,28 @@ public class UserController {
         return "redirect:/";
     }
 
-
     @GetMapping("/login")
     public String login() {
         return "/user/login_form";
+    }
+
+    @GetMapping("/question")
+    public String userQuestionList(Principal principal, Model model) {
+        SiteUser user = userService.getUser(principal.getName());
+        List<Question> questions = user.getQuestion();
+        model.addAttribute("questions", questions);
+        model.addAttribute("user", user);
+
+        return "/user/mypage_question";
+    }
+
+    @GetMapping("/answer")
+    public String userAnswerList() {
+        return "/user/mypage_answer";
+    }
+
+    @GetMapping("/comment")
+    public String userCommentList() {
+        return "/user/mypage_comment";
     }
 }

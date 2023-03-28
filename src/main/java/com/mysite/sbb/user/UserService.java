@@ -2,7 +2,9 @@ package com.mysite.sbb.user;
 
 
 import com.mysite.sbb.DataNotFoundException;
+import com.mysite.sbb.question.Question;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ public class UserService {
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setEmail(email);
+        user.setQuestion(null);
         userRepository.save(user);
 
         return user;
@@ -33,6 +36,10 @@ public class UserService {
 
         throw new DataNotFoundException("siteuser not found");
     }
+
+//    public Page<Question> getUserQuestion(String username) {
+//
+//    }
 
 
 }

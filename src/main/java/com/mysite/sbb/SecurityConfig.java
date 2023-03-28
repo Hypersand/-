@@ -22,6 +22,8 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests().requestMatchers("/question/list").permitAll()
                 .requestMatchers("/question/detail").permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/style.css")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
                 .and()
                 .authorizeHttpRequests().anyRequest().authenticated()
                 .and()

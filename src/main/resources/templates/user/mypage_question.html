@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<div layout:fragment="content" class="container my-3">
+    <h5 class="border-bottom pb-2" th:text="${user.username}"></h5>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link " href="/user/profile">기본정보</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="/user/question">게시</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="/user/answer">답변</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="/user/comment">댓글</a>
+        </li>
+    </ul>
+    <table class="table">
+        <thead class="table-dark">
+        <tr class="text-center">
+<!--            <th>번호</th>-->
+            <th>분류</th>
+            <th style="width: 50%">제목</th>
+            <th>작성자</th>
+            <th>작성일지</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="text-center" th:each="question, loop : ${questions}" >
+<!--            <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>-->
+            <td th:text="${question.category}"></td>
+            <td class="text-start">
+                <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
+                <span class="text-danger small ms-2" th:if="${#lists.size(question.answerList)>0}"
+                      th:text="${#lists.size(question.answerList)}"></span>
+            </td>
+            <td>
+                <span th:if="${question.author != null}" th:text="${question.author.username}"></span>
+            </td>
+            <td th:text="${#temporals.format(question.createData, 'yyyy-MM-dd HH:mm')}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</html>
