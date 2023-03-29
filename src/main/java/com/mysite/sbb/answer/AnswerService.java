@@ -64,5 +64,9 @@ public class AnswerService {
         answerRepository.save(answer);
     }
 
+    public List<Answer> getRecentAnswer() {
+        return answerRepository.findRecentTenAnswer();
+    }
+
 
 }

@@ -21,11 +21,13 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests().requestMatchers("/question/list").permitAll()
+                .requestMatchers("/user/signup").permitAll()
                 .requestMatchers("/question/detail").permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/style.css")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/bootstrap.min.css")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/bootstrap.min.js")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
-                .and()
-                .authorizeHttpRequests().anyRequest().authenticated()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/user/login")
@@ -33,7 +35,6 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/")
                 .and()
                 .logout()
-                .permitAll()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true);

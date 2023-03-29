@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<div layout:fragment="content" class="container my-3">
+    <h5 class="border-bottom pb-2 mb-3">최근이력</h5>
+
+    <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="answer-tab" data-toggle="tab" th:href="@{/recent_list/answer}" role="tab" aria-controls="answer"
+               aria-selected="true">최근답변 (10)</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="comment-tab" data-toggle="tab" th:href="@{/recent_list/comment}" role="tab" aria-controls="comment"
+               aria-selected="true">최근댓글 (10)</a>
+        </li>
+    </ul>
+
+    <table class="table">
+        <thead class="table-dark">
+        <tr class="text-center">
+            <th>분류</th>
+            <th>작성자</th>
+            <th style="width: 50%">글내용</th>
+            <th>작성일지</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="text-center" th:each="answer : ${recentAnswers}" >
+            <td th:text="${answer.question.category}"></td>
+            <td>
+                <span th:if="${answer.question.author != null}" th:text="${answer.author.username}"></span>
+            </td>
+            <td class="text-start">
+                <a th:href="@{|/question/detail/${answer.question.id}|}" th:text="${answer.content}"></a>
+            </td>
+            <td th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</html>
