@@ -10,7 +10,7 @@
 
     <h6 class=" ">카테고리 선택</h6>
     <div class="border-bottom pb-2">
-      <select th:field="*{category}">
+      <select class="required" th:field="*{category}">
         <option th:each="cat : ${T(com.mysite.sbb.category.Category).values()}"
                 th:value="${cat}" th:text="${cat}"></option>
       </select>
