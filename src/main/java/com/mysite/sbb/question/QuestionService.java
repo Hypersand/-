@@ -47,6 +47,7 @@ public class QuestionService {
         question.setCreateData(LocalDateTime.now());
         question.setAuthor(author);
         question.setCategory(category);
+        question.setViews(0L);
 
         questionRepository.save(question);
     }
@@ -66,6 +67,10 @@ public class QuestionService {
     public void vote(Question question, SiteUser siteUser) {
         question.getVoter().add(siteUser);
         questionRepository.save(question);
+    }
+
+    public void updateView(Long id) {
+        questionRepository.updateView(id);
     }
 
     private Specification<Question> search(String keyword) {

@@ -46,6 +46,8 @@ public class Question {
     @Enumerated(EnumType.STRING)
     private Category category;
 
+    private Long views;
+
     public void setAuthor(SiteUser author) {
         this.author = author;
         author.getQuestion().add(this);

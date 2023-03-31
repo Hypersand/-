@@ -42,6 +42,7 @@ public class QuestionController {
                          @RequestParam(value = "page", defaultValue = "0") int page) {
         Question question = questionService.getQuestion(id);
         Page<Answer> paging = answerService.getAnswerList(page, question);
+        questionService.updateView(id);
         model.addAttribute("paging", paging);
         model.addAttribute("question", question);
         return "question/question_detail";
