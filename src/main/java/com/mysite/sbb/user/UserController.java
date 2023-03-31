@@ -2,13 +2,14 @@ package com.mysite.sbb.user;
 
 
 import com.mysite.sbb.question.Question;
-import com.mysite.sbb.question.QuestionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -21,8 +22,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-
-    private final QuestionService questionService;
 
     @GetMapping("/signup")
     public String signup(@ModelAttribute UserCreateForm userCreateForm) {
@@ -81,4 +80,44 @@ public class UserController {
     public String userCommentList() {
         return "/user/mypage_comment";
     }
+
+
+    @PreAuthorize("isAnonymous()")
+    @GetMapping("/forgotPassword")
+    public String findPassword() {
+
+        return "/user/forgot_password";
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @PostMapping("/sendEmail")
+    public String sendEmail(@RequestParam String email) {
+        System.out.println("email  : " + email);
+        MailForm mailForm = userService.createMailForm(email);
+        userService.sendEmail(mailForm);
+
+        return "redirect:/user/login";
+    }
+
+    @GetMapping("/updatePassword")
+    public String updatePassword(PasswordUpdateForm passwordUpdateForm) {
+        return "/user/update_password";
+    }
+
+    @PostMapping("/updatePassword")
+    public String updatePassword(@Validated PasswordUpdateForm passwordUpdateForm, BindingResult bindingResult, Principal principal) {
+        if (bindingResult.hasErrors()) {
+            return "/user/update_password";
+        }
+
+        if (!passwordUpdateForm.newPassword1.equals(passwordUpdateForm.newPassword2)) {
+            return "/user/update_password";
+        }
+
+        SiteUser user = userService.getUser(principal.getName());
+        userService.updatePassword(passwordUpdateForm.newPassword1, user);
+
+        return "redirect:/user/login";
+    }
+
 }

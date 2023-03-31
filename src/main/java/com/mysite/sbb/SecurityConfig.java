@@ -27,6 +27,8 @@ public class SecurityConfig {
                 .requestMatchers(new AntPathRequestMatcher("/bootstrap.min.css")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/bootstrap.min.js")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
+                .requestMatchers("/user/forgotPassword").permitAll()
+                .requestMatchers("/user/sendEmail").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
