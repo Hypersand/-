@@ -26,10 +26,20 @@ public class UserService {
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setEmail(email);
+        user.setUserRole(setAuthorities(username));
         userRepository.save(user);
 
         return user;
     }
+
+    public UserRole setAuthorities(String username) {
+        if (username.equals("admin")) {
+            return UserRole.ADMIN;
+        }
+
+        return UserRole.USER;
+    }
+
 
     @Transactional(readOnly = true)
     public SiteUser getUser(String username) {
@@ -82,6 +92,7 @@ public class UserService {
         message.setReplyTo("on8214@naver.com");
         mailSender.send(message);
     }
+
 
 
 }

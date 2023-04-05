@@ -1,6 +1,9 @@
-package com.mysite.sbb.user;
+package com.mysite.sbb.security;
 
 
+import com.mysite.sbb.user.SiteUser;
+import com.mysite.sbb.user.UserRepository;
+import com.mysite.sbb.user.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,12 +31,10 @@ public class UserSecurityService implements UserDetailsService {
         }
 
         SiteUser user = optionalUser.get();
+        String role = user.getUserRole().getValue();
+        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role);
         List<GrantedAuthority> authorities = new ArrayList<>();
-        if ("admin".equals(username)) {
-            authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
-        } else {
-            authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
-        }
+        authorities.add(grantedAuthority);
 
         return new User(user.getUsername(), user.getPassword(), authorities);
     }
