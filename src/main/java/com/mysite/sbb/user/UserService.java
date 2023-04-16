@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
@@ -21,6 +21,7 @@ public class UserService {
 
     private final JavaMailSender mailSender;
 
+    @Transactional
     public SiteUser create(String username, String password, String email) {
         SiteUser user = new SiteUser();
         user.setUsername(username);
@@ -41,7 +42,7 @@ public class UserService {
     }
 
 
-    @Transactional(readOnly = true)
+
     public SiteUser getUser(String username) {
         Optional<SiteUser> optionalUser = userRepository.findByUsername(username);
         if (optionalUser.isPresent()) {
@@ -64,11 +65,13 @@ public class UserService {
     }
 
 
+    @Transactional
     public void updateTempPassword(String password, String email) {
         SiteUser user = userRepository.findByEmail(email).get();
         user.setPassword(passwordEncoder.encode(password));
     }
 
+    @Transactional
     public void updatePassword(String password, SiteUser user) {
         user.setPassword(passwordEncoder.encode(password));
     }
