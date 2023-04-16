@@ -1,4 +1,4 @@
-package com.mysite.sbb;
+package com.mysite.sbb.security;
 
 
 import org.springframework.context.annotation.Bean;
@@ -35,6 +35,11 @@ public class SecurityConfig {
                 .loginPage("/user/login")
                 .permitAll()
                 .defaultSuccessUrl("/")
+                .and()
+                .oauth2Login()
+                .loginPage("/user/login")
+                .defaultSuccessUrl("/")
+                .permitAll()
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))

@@ -3,7 +3,6 @@ package com.mysite.sbb.security;
 
 import com.mysite.sbb.user.SiteUser;
 import com.mysite.sbb.user.UserRepository;
-import com.mysite.sbb.user.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
